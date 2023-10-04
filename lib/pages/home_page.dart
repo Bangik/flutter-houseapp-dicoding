@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:houseapp/theme.dart';
+import 'package:houseapp/widgets/bottom_navbar_item.dart';
 import 'package:houseapp/widgets/city_card.dart';
 import 'package:houseapp/widgets/space_card.dart';
 import 'package:houseapp/widgets/tips_card.dart';
@@ -169,11 +170,42 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 50 + edge,
+              height: 100 + edge,
             ),
           ],
         ),
       ),
+      floatingActionButton: Container(
+        height: 65,
+        width: MediaQuery.of(context).size.width - (2 * edge),
+        margin: EdgeInsets.symmetric(horizontal: edge),
+        decoration: BoxDecoration(
+          color: const Color(0xffF6F7F8),
+          borderRadius: BorderRadius.circular(23),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            BottomNavbarItem(
+              imageUrl: 'assets/icon_home.png',
+              isActive: true,
+            ),
+            BottomNavbarItem(
+              imageUrl: 'assets/icon_email.png',
+              isActive: false,
+            ),
+            BottomNavbarItem(
+              imageUrl: 'assets/icon_card.png',
+              isActive: false,
+            ),
+            BottomNavbarItem(
+              imageUrl: 'assets/icon_love.png',
+              isActive: false,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
