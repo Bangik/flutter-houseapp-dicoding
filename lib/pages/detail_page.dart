@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:houseapp/model/space.dart';
+import 'package:houseapp/pages/success_page.dart';
 import 'package:houseapp/theme.dart';
 import 'package:houseapp/widgets/facility_item.dart';
 import 'package:houseapp/widgets/rating_item.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
+  final Space spaces;
+  const DetailPage({super.key, required this.spaces});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
-  
+  bool isFavourite = false;
+  var selectedImageIndicator = 0;
+  goToUrl(Uri url) async {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -21,7 +35,7 @@ class _DetailPageState extends State<DetailPage> {
         child: Stack(
           children: [
             Image.asset(
-              'assets/space1.png',
+              widget.spaces.photos[selectedImageIndicator],
               width: MediaQuery.of(context).size.width,
               height: 350,
               fit: BoxFit.cover,
@@ -57,7 +71,7 @@ class _DetailPageState extends State<DetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Kuretakeso Hott',
+                                  widget.spaces.name,
                                   style: blackTextStyle.copyWith(
                                     fontSize: 22,
                                   ),
@@ -67,7 +81,7 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                                 Text.rich(
                                   TextSpan(
-                                    text: '\$52',
+                                    text: '\$${widget.spaces.price}',
                                     style: purpleTextStyle.copyWith(
                                       fontSize: 16,
                                     ),
@@ -89,7 +103,7 @@ class _DetailPageState extends State<DetailPage> {
                                   margin: const EdgeInsets.only(left: 2),
                                   child: RatingItem(
                                     index: e,
-                                    rating: 4,
+                                    rating: widget.spaces.rating,
                                   ),
                                 );
                               }).toList()
@@ -115,23 +129,23 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: edge),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FacilityItem(
                               name: 'kitchen',
                               imageUrl: 'assets/icon_kitchen.png',
-                              total: 2,
+                              total: widget.spaces.numberOfKitchens,
                             ),
                             FacilityItem(
                               name: 'bedroom',
                               imageUrl: 'assets/icon_bedroom.png',
-                              total: 3,
+                              total: widget.spaces.numberOfBedrooms,
                             ),
                             FacilityItem(
                               name: 'Big Lemari',
                               imageUrl: 'assets/icon_cupboard.png',
-                              total: 3,
+                              total: widget.spaces.numberOfCupboards,
                             ),
                           ],
                         ),
@@ -160,32 +174,28 @@ class _DetailPageState extends State<DetailPage> {
                             SizedBox(
                               width: edge,
                             ),
-                            Image.asset(
-                              'assets/photo1.png',
-                              width: 110,
-                              height: 88,
-                              fit: BoxFit.cover,
-                            ),
+                            for (var i = 0; i < widget.spaces.photos.length; i++)
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    selectedImageIndicator = i;
+                                  });
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 18),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.asset(
+                                      widget.spaces.photos[i],
+                                      width: 110,
+                                      height: 88,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             const SizedBox(
-                              width: 18,
-                            ),
-                            Image.asset(
-                              'assets/photo2.png',
-                              width: 110,
-                              height: 88,
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(
-                              width: 18,
-                            ),
-                            Image.asset(
-                              'assets/photo3.png',
-                              width: 110,
-                              height: 88,
-                              fit: BoxFit.cover,
-                            ),
-                            SizedBox(
-                              width: edge,
+                              width: 4,
                             ),
                           ],
                         ),
@@ -212,12 +222,12 @@ class _DetailPageState extends State<DetailPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Jln. Haji Muhidin, \nNo. 1234',
+                              '${widget.spaces.address}\n${widget.spaces.city}',
                               style: greyTextStyle,
                             ),
                             InkWell(
                               onTap: () {
-                                //
+                                goToUrl(Uri.parse(widget.spaces.mapUrl));
                               },
                               child: Image.asset(
                                 'assets/btn_map.png',
@@ -239,7 +249,12 @@ class _DetailPageState extends State<DetailPage> {
                         width: MediaQuery.of(context).size.width - (2 * edge),
                         child: TextButton(
                           onPressed: () {
-                            //
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SuccessPage(),
+                              ),
+                            );
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: purpleColor,
@@ -260,8 +275,41 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: edge,
+                vertical: 30,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Image.asset(
+                      'assets/btn_back.png',
+                      width: 40,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isFavourite = !isFavourite;
+                      });
+                    },
+                    child: Image.asset(
+                      isFavourite
+                          ? 'assets/btn_wishlist_active.png'
+                          : 'assets/btn_wishlist.png',
+                      width: 40,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
