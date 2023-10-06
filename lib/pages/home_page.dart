@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:houseapp/model/city.dart';
+import 'package:houseapp/model/space.dart';
 import 'package:houseapp/theme.dart';
-import 'package:houseapp/widgets/bottom_navbar_item.dart';
 import 'package:houseapp/widgets/city_card.dart';
 import 'package:houseapp/widgets/space_card.dart';
 import 'package:houseapp/widgets/tips_card.dart';
@@ -34,7 +35,7 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: edge),
               child: Text(
-                'Mencari kosan yang cozy',
+                'Find your dream house',
                 style: greyTextStyle.copyWith(
                   fontSize: 16,
                 ),
@@ -59,43 +60,22 @@ class HomePage extends StatelessWidget {
               height: 150,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: const [
+                children: [
                   SizedBox(
-                    width: 24,
+                    width: edge,
                   ),
-                  CityCard(
-                    cityName: 'Jakarta',
-                    imageUrl: 'assets/city1.png',
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  CityCard(
-                    cityName: 'Bandung',
-                    imageUrl: 'assets/city2.png',
-                    isPopular: true,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  CityCard(
-                    cityName: 'Surabaya',
-                    imageUrl: 'assets/city3.png',
-                  ),
-                  CityCard(
-                    cityName: 'Palembang',
-                    imageUrl: 'assets/city4.png',
-                  ),
-                  CityCard(
-                    cityName: 'Aceh',
-                    imageUrl: 'assets/city5.png',
-                  ),
-                  CityCard(
-                    cityName: 'Bogor',
-                    imageUrl: 'assets/city6.png',
-                  ),
-                  SizedBox(
-                    width: 24,
+                  // loop all cities
+                  for (var i = 0; i < cities.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: CityCard(
+                        cityName: cities[i].cityName,
+                        imageUrl: cities[i].imageUrl,
+                        isPopular: cities[i].isPopular,
+                      ),
+                    ),
+                  const SizedBox(
+                    width: 4,
                   ),
                 ],
               ),
@@ -117,20 +97,13 @@ class HomePage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: edge),
-              child: const Column(
+              child: Column(
                 children: [
-                  SpaceCard(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  SpaceCard(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  SpaceCard(),
-                  SizedBox(
-                    height: 30,
-                  ),
+                  for(var i = 0; i < spaces.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30), 
+                      child: SpaceCard(spaces: spaces[i])
+                    ),
                 ],
               ),
             ),
@@ -175,37 +148,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: Container(
-        height: 65,
-        width: MediaQuery.of(context).size.width - (2 * edge),
-        margin: EdgeInsets.symmetric(horizontal: edge),
-        decoration: BoxDecoration(
-          color: const Color(0xffF6F7F8),
-          borderRadius: BorderRadius.circular(23),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            BottomNavbarItem(
-              imageUrl: 'assets/icon_home.png',
-              isActive: true,
-            ),
-            BottomNavbarItem(
-              imageUrl: 'assets/icon_email.png',
-              isActive: false,
-            ),
-            BottomNavbarItem(
-              imageUrl: 'assets/icon_card.png',
-              isActive: false,
-            ),
-            BottomNavbarItem(
-              imageUrl: 'assets/icon_love.png',
-              isActive: false,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
