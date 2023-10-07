@@ -293,8 +293,8 @@ class MessagePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 100 + edge,
                 ),
               ],
             )
