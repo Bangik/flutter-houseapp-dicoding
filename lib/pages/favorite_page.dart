@@ -53,6 +53,9 @@ class FavoritePage extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(
+              height: 100 + edge,
+            ),
           ]
         )
       )
