@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:houseapp/pages/home_page.dart';
+import 'package:houseapp/pages/main_page.dart';
 import 'package:houseapp/theme.dart';
 
 class SplashPage extends StatelessWidget {
@@ -11,83 +11,92 @@ class SplashPage extends StatelessWidget {
       backgroundColor: whiteColor,
       body: SafeArea(
         bottom: false,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Image.asset('assets/splash_image.png'),
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height -
+                  MediaQuery.of(context).padding.top,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 50,
-                left: 30,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/logo.png'),
-                      ),
-                    ),
+            child: Stack(
+              children: [
+                Image.asset(
+                  'assets/splash_image.png',
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  fit: BoxFit.cover,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 50,
+                    left: 30,
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Find Cozy House\nto Stay and Happy',
-                    style: blackTextStyle.copyWith(
-                      fontSize: 24,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Stop membuang banyak waktu\npada tempat yang tidak habitable',
-                    style: greyTextStyle.copyWith(
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SizedBox(
-                    width: 210,
-                    height: 50,
-                    child: ElevatedButton (
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/logo.png'),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: purpleColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(17),
                         ),
                       ),
-                      child: Text(
-                        'Explore Now',
-                        style: whiteTextStyle.copyWith(
-                          fontSize: 18,
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        'Find Cozy House\nto Stay and Happy',
+                        style: blackTextStyle.copyWith(
+                          fontSize: 24,
                         ),
                       ),
-                    ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Stop wasting time\nto find house',
+                        style: greyTextStyle.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      SizedBox(
+                        width: 210,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MainPage(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: purpleColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(17),
+                            ),
+                          ),
+                          child: Text(
+                            'Explore Now',
+                            style: whiteTextStyle.copyWith(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
