@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:houseapp/model/space.dart';
 import 'package:houseapp/pages/detail_page.dart';
 import 'package:houseapp/theme.dart';
 
 class SpaceCard extends StatelessWidget {
-  const SpaceCard({super.key});
+  final Space spaces;
+  const SpaceCard({super.key, required this.spaces});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class SpaceCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context){
-            return DetailPage();
+            return DetailPage(spaces: spaces);
           }),
         );
       },
@@ -25,7 +27,7 @@ class SpaceCard extends StatelessWidget {
               height: 110,
               child: Stack(
                 children: [
-                  Image.asset('assets/space1.png'),
+                  Image.asset(spaces.imageUrl),
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -46,7 +48,12 @@ class SpaceCard extends StatelessWidget {
                             width: 22,
                             height: 22,
                           ),
-                          Text('4/5', style: whiteTextStyle.copyWith(fontSize: 13),)
+                          Text(
+                            '${spaces.rating}/5',
+                            style: whiteTextStyle.copyWith(
+                              fontSize: 13,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -62,7 +69,7 @@ class SpaceCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Kuretakeso Hott',
+                spaces.name,
                 style: blackTextStyle.copyWith(
                   fontSize: 18,
                 ),
@@ -72,7 +79,7 @@ class SpaceCard extends StatelessWidget {
               ),
               Text.rich(
                 TextSpan(
-                  text: '\$52',
+                  text: '\$${spaces.price}',
                   style: purpleTextStyle.copyWith(
                     fontSize: 16,
                   ),
@@ -90,7 +97,7 @@ class SpaceCard extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                'Bandung, Germany',
+                spaces.city,
                 style: greyTextStyle.copyWith(
                   fontSize: 14,
                 ),
